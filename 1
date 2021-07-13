@@ -1,0 +1,40 @@
+#define REMOTEXY_MODE__ESP8266_HARDSERIAL_CLOUD
+#include <RemoteXY.h>
+#define REMOTEXY_SERIAL Serial
+#define REMOTEXY_SERIAL_SPEED 115200
+#define REMOTEXY_WIFI_SSID "SUPERONLINE-WiFi_0282"  //wifi-name
+#define REMOTEXY_WIFI_PASSWORD "MUJJLHVNKYC3"  //wifi-password
+#define REMOTEXY_CLOUD_SERVER "cloud.remotexy.com"
+#define REMOTEXY_CLOUD_PORT 6376
+#define REMOTEXY_CLOUD_TOKEN "a6439ab0c7b37a4c811069dd9c9b0333" //app - token
+#pragma pack(push, 1)
+uint8_t RemoteXY_CONF[] =
+ { 255,2,0,18,0,89,0,11,31,5,
+ 1,0,17,37,29,29,2,1,31,79,
+ 78,32,45,32,79,70,70,0,131,1,
+ 6,7,20,7,1,12,31,65,80,80,
+ 0,131,0,38,7,20,7,2,1,31,
+ 84,69,83,84,0,69,0,20,22,25,
+ 25,1,12,129,0,22,50,20,6,1,
+ 12,68,117,114,117,109,0,67,5,8,
+ 61,47,10,1,31,12,16,4,128,16,
+ 80,31,10,1,1,26 };
+struct {
+uint8_t button_1; // =1 if button pressed, else =0 
+ int8_t slider_1; // =0..100 slider position 
+ int16_t sound_1; // =0 no sound, else ID of sound, =1001 for example, look sound list in app 
+ char text_1[16];  // string UTF8 end zero 
+ uint8_t connect_flag;  // =1 if wire connected, else =0 
+} RemoteXY;
+#pragma pack(pop)
+#define PIN_BUTTON_1 13
+void setup() 
+{
+ RemoteXY_Init ();   
+ pinMode (PIN_BUTTON_1, OUTPUT);
+}
+void loop() 
+{ 
+ RemoteXY_Handler ();
+ digitalWrite(PIN_BUTTON_1, (RemoteXY.button_1==0)?LOW:HIGH);
+}
